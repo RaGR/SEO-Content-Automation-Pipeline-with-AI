@@ -1,0 +1,31 @@
+{
+  "steps": [
+    {
+      "operation": "load_config",
+      "config_path": "config.json"
+    },
+    {
+      "operation": "extract_keywords",
+      "source": "config.website_description",
+      "max_keywords": 12,
+      "fallback_to_config_keywords": true
+    },
+    {
+      "operation": "generate_content",
+      "tone_source": "config.content_settings.tone",
+      "length_source": "config.content_settings.length",
+      "topic_context_source": "config.content_category",
+      "output_content_path": "output/article.json"
+    },
+    {
+      "operation": "evaluate_content",
+      "primary_keyword_source": "auto",
+      "output_report_path": "output/evaluation.json"
+    },
+    {
+      "operation": "export_csv",
+      "output_csv_path": "output/article.csv",
+      "category_source": "config.content_category"
+    }
+  ]
+}

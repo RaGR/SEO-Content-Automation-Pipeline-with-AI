@@ -1,0 +1,30 @@
+{
+  "total_score": 53,
+  "keyword_density": 0.006756756756756757,
+  "keyword_density_score": 77,
+  "keyword_coverage_score": 100,
+  "first_paragraph_score": 0,
+  "headings_score": 60,
+  "readability_score": 23,
+  "meta_description_score": 40,
+  "notes": [
+    "Include the primary keyword within the first 100 words.",
+    "Use clear H1 and multiple H2 headings for structure.",
+    "Simplify language to improve readability (Flesch 50-70 target).",
+    "Optimize meta description length and include the primary keyword."
+  ],
+  "keywords": [
+    "custom software development",
+    "cutting-edge technology solutions",
+    "enterprise-level software solutions",
+    "SaaS product development",
+    "web development services",
+    "digital transformation",
+    "business needs",
+    "streamlining operations",
+    "innovation",
+    "scale",
+    "technology solutions",
+    "software development"
+  ]
+}

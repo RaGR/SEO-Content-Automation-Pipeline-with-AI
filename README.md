@@ -21,7 +21,15 @@ Automate the full SEO content workflow—from keyword discovery to publish-ready
 
      (Aliases such as `api-key` and `LLM-model` are also recognised.)
 
-3. **Run the CLI**
+3. **Run the automated pipeline**
+
+   ```bash
+   python run_pipeline.py
+   ```
+
+   This reads `config.json`, executes the steps listed in `database/commands.json`, and writes outputs to `output/`.
+
+4. **Manual CLI (optional)**
 
    ```bash
    python seo_content_client.py "Website description goes here"
@@ -65,6 +73,17 @@ Each module is intentionally independent so you can:
 
 All commands enforce robust error handling (missing fields, invalid JSON, API issues) and return actionable messages.
 
+### Automated Workflow (`run_pipeline.py`)
+
+- Reads project settings from `config.json`.
+- Executes the ordered steps defined in `database/commands.json` (load config → extract keywords → generate content → evaluate → export).
+- Persists outputs to `output/`:
+  - `article.json` — generated markdown content and metadata.
+  - `evaluation.json` — SEO score, metric breakdown, recommendations.
+  - `article.csv` — WordPress-ready CSV for import or scheduling.
+
+Customise the automation by editing `database/commands.json` to add, remove, or reorder steps—no Python changes needed.
+
 ---
 
 ## Module Reference
@@ -87,7 +106,7 @@ All commands enforce robust error handling (missing fields, invalid JSON, API is
 | Entity | Purpose |
 | --- | --- |
 | `SEOContent` | Dataclass bundling title, body, summary, and meta description. |
-| `generate_seo_content(keywords, client, topic_context=None, tone="Professional", length="Medium")` | Produces markdown-formatted copy using LLM instructions, enforcing JSON-only responses. |
+| `generate_seo_content(keywords, client, description=None, topic_context=None, tone="Professional", length="Medium")` | Produces markdown-formatted copy using an enhanced prompt that enforces a strict JSON response (`title`, `body`, `summary`, `meta_description`) with SEO density guidance. |
 
 ### `evaluation.py`
 
@@ -130,7 +149,18 @@ All commands enforce robust error handling (missing fields, invalid JSON, API is
      "Platform overview blog post"
    ```
 
-   Produces markdown copy with headings, bullet lists, summary, and meta description.
+   Produces a JSON payload such as:
+
+   ```json
+   {
+     "title": "Scaling Sustainable E-Commerce with AI",
+     "body": "# Scaling Sustainable E-Commerce...\n## ...",
+     "summary": "50-100 word synopsis highlighting how AI supports sustainable fulfilment.",
+     "meta_description": "≤160 character snippet featuring the primary keyword."
+   }
+   ```
+
+   The `body` field contains markdown with H1/H2/H3 headings, lists, and a clear call-to-action.
 
 3. **SEO evaluation**
 

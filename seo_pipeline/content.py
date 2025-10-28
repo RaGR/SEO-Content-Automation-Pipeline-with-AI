@@ -22,6 +22,7 @@ class ContentGenerationError(RuntimeError):
 def generate_seo_content(
     keywords: List[str],
     client: OpenRouterClient,
+    description: Optional[str] = None,
     topic_context: Optional[str] = None,
     tone: str = "Professional",
     length: str = "Medium",
@@ -32,30 +33,43 @@ def generate_seo_content(
         raise ContentGenerationError("At least one keyword is required to generate content.")
 
     keyword_str = ", ".join(cleaned_keywords)
-    context_fragment = f"Context: {topic_context}\n" if topic_context else ""
+    description_text = description or topic_context or "No additional description provided."
+    context_note = (
+        f"Additional context: {topic_context}\n" if topic_context and topic_context != description_text else ""
+    )
 
     messages = [
         {
             "role": "system",
             "content": (
-                "You are an SEO-focused content strategist. Craft long-form content with engaging structure, "
-                "organic keyword usage, and adherence to SEO best practices. Always return valid JSON."
+                "You are an advanced AI assistant specialising in SEO content automation. "
+                "Always produce clear, structured, search-optimised articles that follow instructions exactly, "
+                "returning only valid JSON."
             ),
         },
         {
             "role": "user",
             "content": (
-                f"{context_fragment}"
-                f"Target keywords: {keyword_str}\n"
-                "Create an article that includes:\n"
-                "1. A compelling H1 title.\n"
-                "2. An introductory paragraph.\n"
-                "3. At least two H2 sections with supporting detail.\n"
-                "4. Bullet points or numbered lists where helpful.\n"
-                "5. A short conclusion and actionable summary.\n"
-                "6. A 155-character meta description optimized for click-through.\n"
-                f"Tone: {tone}. Target length: {length}.\n"
-                "Use the keywords naturally; avoid keyword stuffing. Ensure markdown uses headings for structure."
+                "Generate an SEO-optimised article based on the provided description and keywords. "
+                "Follow these requirements:\n"
+                "1. Body: A detailed markdown article with an H1 title line, multiple H2/H3 sections, and natural keyword usage.\n"
+                "2. Summary: 50-100 word overview capturing the article's key points.\n"
+                "3. Meta description: <=160 characters, compelling and keyword-rich.\n"
+                "4. Include concise bullet lists where helpful and a clear conclusion/call-to-action.\n"
+                "5. Maintain a professional tone and avoid keyword stuffing (target 1-2% for the primary keyword).\n"
+                "6. Output strictly in JSON with the following schema:\n"
+                '{\n'
+                '  "title": "<catchy H1 title>",\n'
+                '  "body": "<full article body in markdown>",\n'
+                '  "summary": "<50-100 word summary>",\n'
+                '  "meta_description": "<<=160 character meta description>"\n'
+                '}\n'
+                f"Description: {description_text}\n"
+                f"{context_note}"
+                f"Keywords: {keyword_str}\n"
+                f"Tone: {tone}\n"
+                f"Target length guidance: {length} words\n"
+                "Do not include any additional fields, commentary, or formatting outside of the JSON."
             ),
         },
     ]
