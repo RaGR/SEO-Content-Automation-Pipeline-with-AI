@@ -1,3 +1,5 @@
+(this is it!)[./images/Agent_Pipeline_in_Action.png]
+
 # SEO Content Automation Pipeline
 
 Automate the full SEO content workflow—from keyword discovery to publish-ready exports—using OpenRouter-hosted LLMs. The project is organised as a modular Python package so each stage (keywords, content generation, quality scoring, exporting) can be reused, swapped, or extended independently for multilingual or multi-CMS environments.
