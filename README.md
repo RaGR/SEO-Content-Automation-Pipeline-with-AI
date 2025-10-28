@@ -1,4 +1,4 @@
-(this is it!)[./images/Agent_Pipeline_in_Action.png]
+[this is it!](./images/Agent_Pipeline_in_Action.png)
 
 # SEO Content Automation Pipeline
 
